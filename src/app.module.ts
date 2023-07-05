@@ -1,13 +1,20 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TestModule } from './test/test.module';
 import { AuthModule } from './auth/auth.module';
-import { Test3Module } from './test3/test3.module';
-import { TestModule } from './test/test.module';
-
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import config from '../config/default';
+import Database from './database/connect';
+// import { DatabaseModule } from './database/database.module';
+new Database(new ConfigService()).connectDb();
 @Module({
-  imports: [TestModule, Test3Module, AuthModule],
+  imports: [
+    AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [config],
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
