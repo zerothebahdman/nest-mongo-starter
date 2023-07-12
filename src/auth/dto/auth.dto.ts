@@ -84,8 +84,6 @@ export class ForgetPasswordDto {
 export class LoginAuthDto {
   @IsString()
   @IsNotEmpty()
-  @MinLength(10)
-  @MaxLength(14)
   phoneNumber: string;
   @IsString()
   @IsNotEmpty()

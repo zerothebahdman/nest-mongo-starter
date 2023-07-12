@@ -6,6 +6,7 @@ import {
   Res,
   BadRequestException,
   ForbiddenException,
+  UseFilters,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
@@ -17,7 +18,6 @@ import {
   ResetPasswordDto,
   VerifyAuthDto,
 } from './dto/auth.dto';
-// import { UpdateAuthDto } from './dto/update-auth.dto';
 import { ACCOUNT_STATUS } from 'config/constant';
 import { HelperClass } from 'src/utils/helpers';
 import * as moment from 'moment';
@@ -30,13 +30,9 @@ import { SingleErrorMessageValidationPipe } from 'src/utils/transform.exception'
 import { UploadApiResponse } from 'cloudinary';
 import UserService from 'src/user/user.service';
 import EmailService from 'src/email/email.service';
-// import { SendchampService } from 'src/sendchamp/sendchamp.service';
-// import config from '../../config/default';
-// const sendChamp = new SendchampService({
-//   mode: config().sendChamp.mode,
-//   publicKey: config().sendChamp.apiKey,
-// });
+import { CustomExceptionFilter } from 'src/utils/CustomException';
 
+@UseFilters(new CustomExceptionFilter())
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -53,6 +49,21 @@ export class AuthController {
     createAuthDto.phoneNumber = createAuthDto.phoneNumber.startsWith('+234')
       ? createAuthDto.phoneNumber
       : `+234${createAuthDto.phoneNumber.replace(/^0+/, '')}`;
+    const filter = {
+      $or: [
+        { phoneNumber: createAuthDto.phoneNumber },
+        { email: createAuthDto.email },
+      ],
+    };
+    const userExists = await this.userService.getOne<User>(
+      User,
+      filter as unknown as Record<string, unknown>,
+    );
+    if (userExists) {
+      throw new BadRequestException(
+        'Oops!, user with this email or phone number already exists',
+      );
+    }
     createAuthDto.accountStatus = {
       status: ACCOUNT_STATUS.PENDING,
       reason: 'Account created',

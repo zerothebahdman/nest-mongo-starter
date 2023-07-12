@@ -28,6 +28,8 @@ let PUBLIC_KEY = '';
   }
 })();
 
+Logger.log('PRIVATE_KEY', PRIVATE_KEY);
+
 @Injectable()
 export class TokenService {
   constructor(private configService: ConfigService) {}
