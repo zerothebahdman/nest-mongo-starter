@@ -11,6 +11,11 @@ const envVarsSchema = Joi.object()
     ENVIRONMENT: Joi.string().default('staging'),
     FRONTEND_APP_URL: Joi.string().label('Frontend APP URL'),
     API_DOMAIN: Joi.string().description('API Domain'),
+    CLOUDINARY_NAME: Joi.string().label('Cloudinary Name').required(),
+    CLOUDINARY_API_KEY: Joi.string().label('Cloudinary API Key').required(),
+    CLOUDINARY_API_SECRET: Joi.string()
+      .label('Cloudinary API Secret')
+      .required(),
     ENFORCE_SSL: Joi.bool()
       .default(false)
       .description('This is to determine whether to use HTTP or HTTPS'),
