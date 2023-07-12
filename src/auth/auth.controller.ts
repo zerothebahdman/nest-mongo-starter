@@ -29,9 +29,9 @@ import { FileService } from '../file/file.service';
 import { SingleErrorMessageValidationPipe } from 'src/utils/transform.exception';
 import { UploadApiResponse } from 'cloudinary';
 import UserService from 'src/user/user.service';
+import EmailService from 'src/email/email.service';
 // import { SendchampService } from 'src/sendchamp/sendchamp.service';
 // import config from '../../config/default';
-import EmailService from '../../dist/src/email/email.service';
 // const sendChamp = new SendchampService({
 //   mode: config().sendChamp.mode,
 //   publicKey: config().sendChamp.apiKey,

@@ -1,3 +1,4 @@
+import { PaginationModel, PaginationOptions } from 'index';
 import { Schema, Model } from 'mongoose';
 
 export interface Pagination<T> extends Model<T> {

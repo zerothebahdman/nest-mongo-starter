@@ -1,6 +1,7 @@
-import nodemailer, { Transporter } from 'nodemailer';
+import { Transporter } from 'nodemailer';
 import config from '../../config/default';
 import { Logger } from '@nestjs/common';
+import * as nodemailer from 'nodemailer';
 
 export type MailData = {
   from: string;
