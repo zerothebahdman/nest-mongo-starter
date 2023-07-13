@@ -31,6 +31,8 @@ import { UploadApiResponse } from 'cloudinary';
 import UserService from 'src/user/user.service';
 import EmailService from 'src/email/email.service';
 import { CustomExceptionFilter } from 'src/utils/CustomException';
+import { createUser } from './validation/auth.validator';
+import { ValidatePipe } from 'src/utils/validation.pipe';
 
 @UseFilters(new CustomExceptionFilter())
 @Controller('auth')
@@ -44,7 +46,7 @@ export class AuthController {
     private readonly emailService: EmailService,
   ) {}
   @Post('/create')
-  @UsePipes(new SingleErrorMessageValidationPipe())
+  @UsePipes(new ValidatePipe<CreateAuthDto>(createUser))
   async create(@Body() createAuthDto: CreateAuthDto, @Res() res: Response) {
     createAuthDto.phoneNumber = createAuthDto.phoneNumber.startsWith('+234')
       ? createAuthDto.phoneNumber
